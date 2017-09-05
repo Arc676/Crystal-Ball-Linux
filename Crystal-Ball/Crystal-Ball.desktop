@@ -1,0 +1,8 @@
+[Desktop Entry]
+_Name=Crystal-Ball
+Exec=qmlscene %U Crystal-Ball/Main.qml
+Icon=Crystal-Ball/Crystal-Ball.png
+Terminal=false
+Type=Application
+X-Ubuntu-Touch=true
+
