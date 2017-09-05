@@ -1,9 +1,11 @@
 import QtQuick 2.4
+import QtQuick.Controls 1.4
 import Ubuntu.Components 1.3
 
 MainView {
     // objectName for functional testing purposes (autopilot-qt5)
     objectName: "mainView"
+    id: rootView
 
     // Note! applicationName needs to match the "name" field of the click manifest
     applicationName: "crystal-ball.arc676"
@@ -14,7 +16,7 @@ MainView {
     property real sideMargin: units.gu(2)
 
     function getAnswer() {
-        var index = 0
+        var index = parseInt(Math.random() * 12)
         switch (index) {
         case 0:
             return qsTr("Yes")
@@ -22,6 +24,24 @@ MainView {
             return qsTr("No")
         case 2:
             return qsTr("Maybe")
+        case 3:
+            return qsTr("Try asking again later")
+        case 4:
+            return qsTr("Definitely")
+        case 5:
+            return qsTr("Of course not")
+        case 6:
+            return qsTr("Sure")
+        case 7:
+            return qsTr("Nope")
+        case 8:
+            return qsTr("Why not?")
+        case 9:
+            return qsTr("I wouldn't bet on it")
+        case 10:
+            return qsTr("You bet!")
+        case 11:
+            return qsTr("Don't hold your breath")
         }
     }
 
@@ -48,19 +68,32 @@ MainView {
             text: qsTr("Enter yes/no question")
         }
 
+        TextField {
+            id: questionField
+            anchors {
+                top: label.bottom
+                topMargin: units.gu(2)
+                left: parent.left
+                leftMargin: sideMargin
+                right: parent.right
+                rightMargin: sideMargin
+            }
+        }
+
         Button {
             id: askbutton
             anchors {
-                horizontalCenter: parent.horizontalCenter
-                top: label.bottom
+                top: questionField.bottom
                 topMargin: units.gu(2)
+                left: parent.left
+                leftMargin: sideMargin
+                right: parent.right
+                rightMargin: sideMargin
             }
-            width: parent.width
             text: qsTr("Ask question")
             onClicked: {
-                var text = transcript.text
-                text += "\n" + getAnswer()
-                transcript.text = text
+                transcript.text = transcript.text + "\nQ: " + questionField.text + "\nA: " + getAnswer()
+                questionField.text = ""
             }
         }
 
@@ -74,6 +107,10 @@ MainView {
                 right: parent.right
                 rightMargin: sideMargin
             }
+            height: rootView.height - questionField.height - clear.height - askbutton.height - label.height - pageHeader.height - 6 * sideMargin
+            width: rootView.width - 2 * sideMargin
+            readOnly: true
+            text: qsTr("Crystal Ball Transcript")
         }
 
         Button {
@@ -85,6 +122,10 @@ MainView {
                 leftMargin: sideMargin
                 right: parent.right
                 rightMargin: sideMargin
+            }
+            text: qsTr("Clear transcript")
+            onClicked: {
+                transcript.text = qsTr("Crystal Ball Transcript")
             }
         }
     }
