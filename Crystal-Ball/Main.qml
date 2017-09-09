@@ -107,7 +107,7 @@ MainView {
                 right: parent.right
                 rightMargin: sideMargin
             }
-            height: rootView.height - questionField.height - clear.height - askbutton.height - label.height - pageHeader.height - 6 * sideMargin
+            height: rootView.height - questionField.height - clear.height - askbutton.height - label.height - pageHeader.height - about.height - 7 * sideMargin
             width: rootView.width - 2 * sideMargin
             readOnly: true
             text: qsTr("Crystal Ball Transcript")
@@ -126,6 +126,24 @@ MainView {
             text: qsTr("Clear transcript")
             onClicked: {
                 transcript.text = qsTr("Crystal Ball Transcript")
+            }
+        }
+
+        Button {
+            id: about
+            anchors {
+                top: clear.bottom
+                topMargin: sideMargin
+                left: parent.left
+                leftMargin: sideMargin
+                right: parent.right
+                rightMargin: sideMargin
+            }
+            text: qsTr("About Crystal Ball")
+            onClicked: {
+                var component = Qt.createComponent("About.qml")
+                var window = component.createObject(rootView)
+                window.show()
             }
         }
     }
