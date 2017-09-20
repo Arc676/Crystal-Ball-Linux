@@ -83,38 +83,46 @@ ApplicationWindow {
             text: qsTr("Ask question")
             anchors.rightMargin: 2
             onClicked: {
-                transcript.append("\nQ: " + questionField.text + "\nA: " + getAnswer())
+                transcript.append("Q: " + questionField.text + "\nA: " + getAnswer())
                 questionField.text = ""
             }
         }
 
-        TextArea {
-            id: transcript
-            anchors {
-                top: askbutton.bottom
-                topMargin: sideMargin
-                left: parent.left
-                leftMargin: sideMargin
-                right: parent.right
-            }
-            height: rootView.height - questionField.height - clear.height - askbutton.height - label.height - about.height - 7 * sideMargin
-            width: rootView.width - 2 * sideMargin
-            readOnly: true
-            text: qsTr("Crystal Ball Transcript")
-            wrapMode: Text.WordWrap
+        Flickable {
+            id: flickable
+            height: 289
+            anchors.right: parent.right
             anchors.rightMargin: 2
+            anchors.left: parent.left
+            anchors.leftMargin: 2
+            anchors.top: askbutton.bottom
+            anchors.topMargin: 2
+
+            TextArea.flickable:
+            TextArea {
+                id: transcript
+                readOnly: true
+                text: qsTr("Crystal Ball Transcript")
+                anchors.fill: parent
+                wrapMode: Text.WordWrap
+                onTextChanged: {
+                    if (transcript.height > flickable.height) {
+                        flickable.contentY = transcript.height - flickable.height
+                    }
+                }
+            }
         }
 
         Button {
             id: clear
             anchors {
-                top: transcript.bottom
-                topMargin: sideMargin
+                top: flickable.bottom
                 left: parent.left
                 leftMargin: sideMargin
                 right: parent.right
             }
             text: qsTr("Clear transcript")
+            anchors.topMargin: 2
             anchors.rightMargin: 2
             onClicked: {
                 transcript.text = qsTr("Crystal Ball Transcript")
@@ -138,6 +146,7 @@ ApplicationWindow {
                 window.show()
             }
         }
+
     }
 
 }
